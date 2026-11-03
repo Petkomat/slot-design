@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "slotmath"
+version = "0.1.0"
+description = "Slot-game mathematics: fit reels to a target RTP and volatility, verify exactly and by Monte Carlo"
+requires-python = ">=3.11"
+dependencies = ["numpy", "numba"]
+
+[project.optional-dependencies]
+dev = ["pytest", "ruff"]
+# Plots for REPORT.md only. Nothing in slotmath's computation imports these.
+report = ["matplotlib", "seaborn", "pandas"]
+
+[tool.setuptools]
+packages = ["slotmath"]
+
+[tool.setuptools.package-data]
+slotmath = ["designs.json"]   # the fitted strips and weights, written by python -m slotmath.fit
+
+[tool.pytest.ini_options]
+markers = ["slow: long-running agreement tests and every fitted design"]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "W", "F", "I"]   # pycodestyle, pyflakes, import order
