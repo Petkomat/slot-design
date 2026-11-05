@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>slot-design</title>
+    <meta
+      name="description"
+      content="A 5x3 cascading slot fitted to a target RTP and volatility, played in the browser on the fitted reel strips."
+    />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='18' fill='%23151a21'/%3E%3Cpath d='M50 16 L61 42 L88 42 L66 60 L75 86 L50 70 L25 86 L34 60 L12 42 L39 42 Z' fill='%23f2b134'/%3E%3C/svg%3E" />
+  </head>
+  <body>
+    <div id="sprite" hidden></div>
+
+    <main>
+      <header class="masthead">
+        <h1>A 5&times;3 cascading slot, fitted to a target RTP and volatility</h1>
+        <p class="lede">
+          The targets are inputs and the reels are outputs. This page plays the reel strips and
+          stop weights that <code>slotmath</code> fitted to them &mdash; the same integers
+          <code>designs.json</code> holds, nothing retuned for the demo.
+        </p>
+      </header>
+
+      <section class="panel" aria-labelledby="panel-heading">
+        <h2 id="panel-heading" class="section-heading">The two fitted parameters</h2>
+        <table class="figures">
+          <thead>
+            <tr>
+              <th scope="col"><span class="sr-only">Reading</span></th>
+              <th scope="col">RTP</th>
+              <th scope="col">Volatility</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">
+                Target <span class="note">asked of the fitter</span>
+              </th>
+              <td id="target-rtp" class="num">&mdash;</td>
+              <td id="target-vol" class="num">&mdash;</td>
+            </tr>
+            <tr>
+              <th scope="row">
+                Exact <span class="note">what the integer weights achieve</span>
+              </th>
+              <td id="exact-rtp" class="num">&mdash;</td>
+              <td id="exact-vol" class="num">&mdash;</td>
+            </tr>
+            <tr class="session-row">
+              <th scope="row">
+                Session <span class="note">this run, &plusmn; one standard error</span>
+              </th>
+              <td id="session-rtp" class="num">&mdash;</td>
+              <td id="session-vol" class="num">&mdash;</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="footnote">
+          Volatility is the standard deviation of one spin&rsquo;s payout per unit staked. A
+          session figure is a random variable: its standard error falls as
+          1&nbsp;/&nbsp;&radic;spins, so a few hundred spins cannot pin down a 4.5.
+        </p>
+        <dl class="counters">
+          <div><dt>Spins</dt><dd id="count-spins">0</dd></div>
+          <div><dt>Hit frequency</dt><dd id="count-hits">&mdash;</dd></div>
+          <div><dt>Net</dt><dd id="count-net">0.00&times;</dd></div>
+        </dl>
+      </section>
+
+      <section class="machine">
+        <div class="reel-wrap">
+          <div class="ladder" id="ladder" aria-live="polite"></div>
+          <div class="reels" id="reels" role="grid" aria-label="The window"></div>
+          <p class="spin-total" id="spin-total">&nbsp;</p>
+        </div>
+        <aside class="wins" aria-labelledby="wins-heading">
+          <h2 id="wins-heading" class="section-heading">This spin</h2>
+          <ol class="win-list" id="win-list"></ol>
+          <p class="wins-empty" id="wins-empty">Spin to see the lines that pay.</p>
+        </aside>
+      </section>
+
+      <section class="controls">
+        <div class="buttons">
+          <button type="button" id="spin" class="primary">Spin</button>
+          <button type="button" id="batch-10k">Spin 10,000</button>
+          <button type="button" id="batch-1m">Spin 1,000,000</button>
+          <button type="button" id="reset" class="ghost">Reset session</button>
+        </div>
+        <div class="seed">
+          <label for="seed-input">Seed</label>
+          <input id="seed-input" type="number" min="0" step="1" value="2026" />
+          <p class="note">
+            The browser draws stops with the same splitmix64 stream as
+            <code>slotmath.simulate</code>, so this session can be replayed in Python with
+            <code>simulate_python(game, n, seed=&hellip;)</code>. Changing the seed restarts it.
+          </p>
+        </div>
+        <p class="progress" id="progress" aria-live="polite"></p>
+      </section>
+
+      <section class="strips-section" aria-labelledby="strips-heading">
+        <h2 id="strips-heading" class="section-heading">The fitted strips</h2>
+        <p class="note">
+          Five reels of 32 stops, as the fitter laid them out. The outlined cells are the window
+          above; hover or tap a stop for its weight. Stop weights sum to 4096 on every reel, so
+          every probability in the report is an integer over 4096<sup>5</sup>.
+        </p>
+        <div class="strips" id="strips"></div>
+      </section>
+
+      <footer class="colophon">
+        <p>
+          Paytable, mechanics and the full analysis:
+          <a href="https://github.com/Petkomat/slot-design">the repository</a>,
+          <a href="https://github.com/Petkomat/slot-design/blob/main/REPORT.md">REPORT.md</a> and
+          <a href="https://github.com/Petkomat/slot-design/blob/main/VOLATILITY.md">VOLATILITY.md</a>.
+          The rules behind this page are a fourth implementation, checked spin for spin against
+          the Python one on a million spins of a recorded stream.
+        </p>
+      </footer>
+    </main>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

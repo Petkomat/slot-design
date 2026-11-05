@@ -1,0 +1,20 @@
+{
+  "name": "slot-design-demo",
+  "private": true,
+  "type": "module",
+  "description": "Browser demo of the fitted slot design",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "test": "vitest run --config vitest.config.ts",
+    "test:slow": "vitest run --config vitest.slow.config.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.6",
+    "vitest": "^5.1.0"
+  }
+}

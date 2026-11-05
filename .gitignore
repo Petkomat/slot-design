@@ -227,3 +227,11 @@ __marimo__/
 
 # Local instructions for the coding assistant; not part of the project
 CLAUDE.md
+AGENTS.md
+
+# Working notes on the project's own vocabulary; not part of the published project
+GLOSSARY.md
+
+# Browser demo: dependencies and build output (build/ and dist/ are covered above)
+node_modules/
+.vite/

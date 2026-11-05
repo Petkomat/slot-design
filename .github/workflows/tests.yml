@@ -39,3 +39,30 @@ jobs:
       - name: All tests
         if: ${{ inputs.slow }}
         run: pytest -q
+
+  # The browser demo's evaluator, checked against totals `slotmath/webfixture.py` recorded from
+  # the Python one. Same two tiers as above: 20,000 spins on every push, a million on demand.
+  web:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Install
+        run: npm ci
+        working-directory: web
+      - name: Typecheck and build
+        run: npm run build
+        working-directory: web
+      - name: Fast tests
+        if: ${{ !inputs.slow }}
+        run: npm test
+        working-directory: web
+      - name: All tests
+        if: ${{ inputs.slow }}
+        run: npm test && npm run test:slow
+        working-directory: web

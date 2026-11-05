@@ -101,10 +101,11 @@ enumeration):
 
 The implementation is Numba on 20 threads; the controls are pure Python.
 
-- **Three evaluators, written independently.** `reference.py` states the rules as plainly as
+- **Four evaluators, written independently.** `reference.py` states the rules as plainly as
   possible, in pure Python. `exact.py` (Numba) reads each payline once: the leading wilds, then
   the first other symbol, the only one that can run past them. `simulate.py` (Numba) scans each
-  line with a shrinking bitmask of the paying symbols it still matches.
+  line with a shrinking bitmask of the paying symbols it still matches. `web/src/rules.ts`, the
+  evaluator behind the playable page, is a fourth, in TypeScript.
 - **The two Numba evaluators agree on every stop vector.** On all 33,554,432 stop vectors of every
   fitted design, total pay and cascade length are identical (a test). So the Monte Carlo can only
   differ from the exact figures through the sampling of stops.
@@ -116,6 +117,12 @@ The implementation is Numba on 20 threads; the controls are pure Python.
   and reproduces its totals bit for bit, for the main design and for every volatility level. It
   also matches the Numba enumerator histogram for histogram on small games with wilds, scatters
   and cascades each switched on and off.
+- **The browser agrees with Python, exactly.** `slotmath/webfixture.py` records what one seeded
+  stream pays under `reference.py`; the TypeScript redraws the same stops from the same seed and
+  must reproduce the totals — pay, sum of squares, hits and the cascade-step histogram — spin for
+  spin, over a million spins. Not within a tolerance: comparing an empirical RTP against 0.96
+  instead would have a standard error of 0.0045 at that many spins, blind to anything under
+  about 1% of RTP and failing by chance one run in twenty.
 - **The fitter only proposes.** Every reported figure is recomputed from the integer weights in
   exact rational arithmetic.
 - **Exact against Monte Carlo.** In the report's run of 10⁹ spins, 11 of 14 comparisons (RTP, hit
