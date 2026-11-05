@@ -1,5 +1,9 @@
 # slot-design
 
+**Play the fitted design:** <https://petkomat.github.io/slot-design/> — the strips and weights
+below, spinning in the browser, with the session's RTP and volatility kept next to the target and
+the exact value, and a button that spins a million times so they converge while you watch.
+
 **Give it a paytable, the reel geometry, the mechanics, a target RTP and a target volatility; it
 fits the reel strips and stop weights that realise them, and proves every design twice:** once
 exactly, by enumerating all 32⁵ = 33,554,432 stop combinations in rational arithmetic, and once by
