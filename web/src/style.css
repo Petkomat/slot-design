@@ -42,7 +42,7 @@ main {
 h1 {
   font-size: clamp(1.3rem, 1rem + 1.6vw, 2rem);
   line-height: 1.2;
-  margin: 0 0 8px;
+  margin: 0;
   letter-spacing: -0.01em;
 }
 
@@ -56,9 +56,15 @@ h1 {
 }
 
 .lede {
-  margin: 0;
+  margin: 0 0 20px;
   color: var(--muted);
   max-width: 68ch;
+}
+
+/* The rule spans the card, not the text's measure, so it reads as a divider. */
+.panel .section-heading {
+  border-top: 1px solid var(--line);
+  padding-top: 18px;
 }
 
 .note,
@@ -137,59 +143,76 @@ a {
   font-size: clamp(0.8rem, 0.6rem + 0.6vw, 1rem);
 }
 
-.session-row td {
-  color: var(--accent);
+/* ------------------------------------------------------------- session */
+.session {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 16px;
 }
 
-.counters {
+.session-figures {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px 32px;
-  margin: 16px 0 0;
+  gap: 14px 30px;
+  margin: 0;
 }
 
-.counters div {
-  display: flex;
-  flex-direction: column;
-}
-
-.counters dt {
-  font-size: 0.74rem;
+.session-figures dt {
+  font-size: 0.72rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--muted);
 }
 
-.counters dd {
-  margin: 0;
+.session-figures dd {
+  margin: 2px 0 0;
   font-size: 1.05rem;
+  color: var(--accent);
+  font-family: ui-monospace, 'Cascadia Code', 'SF Mono', Menlo, Consolas, monospace;
   font-variant-numeric: tabular-nums;
 }
 
-.counters .up {
+.session-figures .up {
   color: var(--up);
 }
 
-.counters .down {
+.session-figures .down {
   color: var(--down);
 }
 
 /* ----------------------------------------------------------------- machine */
+/* Two rectangles side by side: the window and this spin's wins, sharing a row so their top and
+   bottom edges line up. The multiplier ladder sits in its own row above the left column, and
+   the spin total in its own row below it, so neither pushes the panels out of alignment. */
 .machine {
   display: grid;
   grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
-  gap: 20px;
+  column-gap: 20px;
+  row-gap: 10px;
   align-items: start;
 }
 
-.reel-wrap {
-  min-width: 0;
+.machine > .ladder {
+  grid-area: 1 / 1;
+}
+
+.machine > .reels {
+  grid-area: 2 / 1;
+}
+
+.machine > .spin-total {
+  grid-area: 3 / 1;
+}
+
+.machine > .wins {
+  grid-area: 2 / 2;
+  align-self: stretch;
 }
 
 .ladder {
   display: flex;
   gap: 6px;
-  margin-bottom: 10px;
   min-height: 28px;
 }
 
@@ -284,6 +307,9 @@ a {
   border-radius: var(--radius);
   padding: 16px;
   min-height: 160px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .win-list {
@@ -293,8 +319,8 @@ a {
   display: flex;
   flex-direction: column;
   gap: 2px;
-  max-height: 340px;
   overflow-y: auto;
+  min-height: 0;
 }
 
 .win-step {
@@ -437,7 +463,7 @@ button.ghost {
 }
 
 .progress {
-  margin: 0;
+  margin: 12px 0 0;
   min-height: 1.4em;
   font-variant-numeric: tabular-nums;
   color: var(--muted);
@@ -519,6 +545,13 @@ button.ghost {
 @media (max-width: 760px) {
   .machine {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .machine > .ladder,
+  .machine > .reels,
+  .machine > .spin-total,
+  .machine > .wins {
+    grid-area: auto;
   }
 
   .cell-label {

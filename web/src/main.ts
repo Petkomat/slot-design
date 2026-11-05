@@ -62,11 +62,12 @@ let skip = false
 const worker = new Worker(new URL('./batch.worker.ts', import.meta.url), { type: 'module' })
 
 // ------------------------------------------------------------- number formats
-const fixed = (value: number, places: number): string =>
-  Number.isFinite(value) ? value.toFixed(places) : '—'
-
-const plusMinus = (value: number, error: number, places: number): string =>
-  Number.isFinite(value) ? `${value.toFixed(places)} ± ${fixed(error, places)}` : '—'
+/** "0.9577 ± 0.0045", or just the value when there is no meaningful error yet. */
+const plusMinus = (value: number, error: number, places: number): string => {
+  if (!Number.isFinite(value)) return '—'
+  if (!Number.isFinite(error)) return value.toFixed(places)
+  return `${value.toFixed(places)} ± ${error.toFixed(places)}`
+}
 
 const stakes = (units: number): string => `${(units / GAME.stakeUnits).toFixed(2)}×`
 

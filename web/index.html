@@ -16,14 +16,14 @@
     <main>
       <header class="masthead">
         <h1>A 5&times;3 cascading slot, fitted to a target RTP and volatility</h1>
+      </header>
+
+      <section class="panel" aria-labelledby="panel-heading">
         <p class="lede">
           The targets are inputs and the reels are outputs. This page plays the reel strips and
           stop weights that <code>slotmath</code> fitted to them &mdash; the same integers
           <code>designs.json</code> holds, nothing retuned for the demo.
         </p>
-      </header>
-
-      <section class="panel" aria-labelledby="panel-heading">
         <h2 id="panel-heading" class="section-heading">The two fitted parameters</h2>
         <table class="figures">
           <thead>
@@ -48,33 +48,15 @@
               <td id="exact-rtp" class="num">&mdash;</td>
               <td id="exact-vol" class="num">&mdash;</td>
             </tr>
-            <tr class="session-row">
-              <th scope="row">
-                Session <span class="note">this run, &plusmn; one standard error</span>
-              </th>
-              <td id="session-rtp" class="num">&mdash;</td>
-              <td id="session-vol" class="num">&mdash;</td>
-            </tr>
           </tbody>
         </table>
-        <p class="footnote">
-          Volatility is the standard deviation of one spin&rsquo;s payout per unit staked. A
-          session figure is a random variable: its standard error falls as
-          1&nbsp;/&nbsp;&radic;spins, so a few hundred spins cannot pin down a 4.5.
-        </p>
-        <dl class="counters">
-          <div><dt>Spins</dt><dd id="count-spins">0</dd></div>
-          <div><dt>Hit frequency</dt><dd id="count-hits">&mdash;</dd></div>
-          <div><dt>Net</dt><dd id="count-net">0.00&times;</dd></div>
-        </dl>
       </section>
 
       <section class="machine">
-        <div class="reel-wrap">
-          <div class="ladder" id="ladder" aria-live="polite"></div>
-          <div class="reels" id="reels" role="grid" aria-label="The window"></div>
-          <p class="spin-total" id="spin-total">&nbsp;</p>
-        </div>
+        <div class="ladder" id="ladder" aria-live="polite"></div>
+        <div class="reels" id="reels" role="grid" aria-label="The window"></div>
+        <p class="spin-total" id="spin-total">&nbsp;</p>
+
         <aside class="wins" aria-labelledby="wins-heading">
           <h2 id="wins-heading" class="section-heading">This spin</h2>
           <ol class="win-list" id="win-list"></ol>
@@ -89,6 +71,26 @@
           <button type="button" id="batch-1m">Spin 1,000,000</button>
           <button type="button" id="reset" class="ghost">Reset session</button>
         </div>
+
+        <section class="session" aria-labelledby="session-heading">
+          <h2 id="session-heading" class="section-heading">This session</h2>
+          <dl class="session-figures">
+            <div><dt>RTP</dt><dd id="session-rtp">&mdash;</dd></div>
+            <div><dt>Volatility</dt><dd id="session-vol">&mdash;</dd></div>
+            <div><dt>Spins</dt><dd id="count-spins">0</dd></div>
+            <div><dt>Hit frequency</dt><dd id="count-hits">&mdash;</dd></div>
+            <div><dt>Net, all spins</dt><dd id="count-net">0.00&times;</dd></div>
+          </dl>
+          <p class="progress" id="progress" aria-live="polite"></p>
+          <p class="note">
+            A session figure is a random variable, quoted &plusmn; one standard error. It falls
+            as 1&nbsp;/&nbsp;&radic;spins, so a few hundred spins cannot pin down a 4.5 &mdash;
+            spin a million and watch these close on the exact figures at the top.
+          </p>
+        </section>
+      </section>
+
+      <section class="seed-section">
         <div class="seed">
           <label for="seed-input">Seed</label>
           <input id="seed-input" type="number" min="0" step="1" value="2026" />
@@ -98,7 +100,6 @@
             <code>simulate_python(game, n, seed=&hellip;)</code>. Changing the seed restarts it.
           </p>
         </div>
-        <p class="progress" id="progress" aria-live="polite"></p>
       </section>
 
       <section class="strips-section" aria-labelledby="strips-heading">

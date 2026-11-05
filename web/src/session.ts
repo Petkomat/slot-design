@@ -64,18 +64,28 @@ export interface Summary {
 export function summarise(totals: Totals, stakeUnits: number): Summary {
   const { spins, s1, s2, s3, s4, hits } = totals
   if (spins === 0) {
-    return { spins: 0, rtp: NaN, rtpSe: NaN, volatility: NaN, volatilitySe: NaN, hitFrequency: NaN, net: 0 }
+    return {
+      spins: 0,
+      rtp: Number.NaN,
+      rtpSe: Number.NaN,
+      volatility: Number.NaN,
+      volatilitySe: Number.NaN,
+      hitFrequency: Number.NaN,
+      net: 0,
+    }
   }
   const m1 = s1 / spins
   const m2 = s2 / spins
   const m3 = s3 / spins
   const m4 = s4 / spins
-  const variance = Math.max(m2 - m1 * m1, 0)
-  const sd = Math.sqrt(variance)
+  // Unbiased, so a single spin reports no spread rather than a spurious zero: one spin carries
+  // no information about how much payouts vary, and "4.0000 +/- 0.0000" would claim it does.
+  const variance = spins > 1 ? (Math.max(m2 - m1 * m1, 0) * spins) / (spins - 1) : Number.NaN
+  const sd = Math.sqrt(variance) // undefined for a single spin, and stays so downstream
   // Fourth central moment from the raw ones.
   const mu4 = Math.max(m4 - 4 * m1 * m3 + 6 * m1 * m1 * m2 - 3 * m1 ** 4, 0)
   const varianceOfVariance = Math.max(mu4 - variance * variance, 0) / spins
-  const sdSe = sd > 0 ? Math.sqrt(varianceOfVariance) / (2 * sd) : NaN
+  const sdSe = sd > 0 ? Math.sqrt(varianceOfVariance) / (2 * sd) : Number.NaN
   return {
     spins,
     rtp: m1 / stakeUnits,
