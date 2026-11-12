@@ -1,8 +1,9 @@
-# slot-design
+# slot-design: a demonstration game, analysed exactly
 
 **Play the fitted design:** <https://petkomat.github.io/slot-design/> — the strips and weights
-below, spinning in the browser, with the session's RTP and volatility kept next to the target and
-the exact value, and a button that spins a million times so they converge while you watch.
+below, spinning in the browser for no stake, with the session's RTP and volatility kept next to
+the target and the exact value, and a button that spins a million times so they converge while
+you watch.
 
 **Give it a paytable, the reel geometry, the mechanics, a target RTP and a target volatility; it
 fits the reel strips and stop weights that realise them, and proves every design twice:** once
@@ -10,7 +11,10 @@ exactly, by enumerating all 32⁵ = 33,554,432 stop combinations in rational ari
 an independent Monte Carlo (10⁹ spins for the main design, 10⁸ for each other level).
 
 The game is a conventional 5×3 video slot: 20 paylines, eight paying symbols, a wild, a scatter,
-and cascades with a multiplier ladder. It is fitted at five volatilities from low to high.
+and cascades with a multiplier ladder. It is invented for this repository rather than taken from a
+released title — the paytable and mechanics are a plausible brief, not a commercial one — and it
+is fitted at five volatilities from low to high. What is not a demonstration is the arithmetic:
+every figure below is either exact or quoted with its standard error.
 
 | main design: RTP 0.96, volatility 4.5 | |
 | --- | --- |
